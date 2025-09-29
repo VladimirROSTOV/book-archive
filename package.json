@@ -1,0 +1,14 @@
+{
+  "name": "book-archive",
+  "version": "1.0.0",
+  "description": "Binary Search Tree for Book Archive",
+  "main": "src/bookTree.js",
+  "type": "module",
+  "scripts": {
+    "start": "node examples/demo.js",
+    "test": "node tests/tree.test.js",
+    "interactive": "node examples/interactive.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
