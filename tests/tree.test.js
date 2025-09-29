@@ -1,39 +1,53 @@
-// tests/tree.test.js
+
 import { BookBST } from "../src/bookTree.js";
 
-function runTests() {
-  console.log("🧪 Запуск тестов BookBST...");
+function запускТестов() {
+  console.log("🧪 Запуск тестов бинарного дерева книг...");
 
-  const tree = new BookBST();
+  const дерево = new BookBST();
 
-  // Test 1: insert
-  tree.insert(10, "Book A", "Author A", 2000);
-  tree.insert(5, "Book B", "Author B", 1995);
-  tree.insert(15, "Book C", "Author C", 2010);
-  console.assert(tree.search(10)?.title === "Book A", "❌ Test insert/search failed for 10");
-  console.assert(tree.search(5)?.title === "Book B", "❌ Test insert/search failed for 5");
-  console.assert(tree.search(15)?.title === "Book C", "❌ Test insert/search failed for 15");
+  console.log("1️⃣ Тест добавления книг...");
+  дерево.insert(100, "Война и мир", "Л. Толстой", 1869);
+  дерево.insert(50, "Преступление и наказание", "Ф. Достоевский", 1866);
+  дерево.insert(150, "Мастер и Маргарита", "М. Булгаков", 1967);
+  дерево.insert(75, "Отцы и дети", "И. Тургенев", 1862);
 
-  // Test 2: in-order traversal
-  const inOrderKeys = [];
-  tree.inOrder(node => inOrderKeys.push(node.isbn));
-  console.assert(JSON.stringify(inOrderKeys) === JSON.stringify([5,10,15]), "❌ Test inOrder traversal failed");
+  console.assert(дерево.search(100)?.title === "Война и мир", "❌ Не удалось найти книгу с ISBN 100");
+  console.assert(дерево.search(50)?.title === "Преступление и наказание", "❌ Не удалось найти книгу с ISBN 50");
+  console.assert(дерево.search(150)?.title === "Мастер и Маргарита", "❌ Не удалось найти книгу с ISBN 150");
+  console.assert(дерево.search(75)?.title === "Отцы и дети", "❌ Не удалось найти книгу с ISBN 75");
+  console.log("✅ Добавление книг прошло успешно\n");
 
-  // Test 3: remove leaf node
-  tree.remove(5);
-  console.assert(tree.search(5) === null, "❌ Test remove leaf node failed");
+  console.log("2️⃣ Тест обхода дерева (in-order)...");
+  const списокISBN = [];
+  дерево.inOrder(node => списокISBN.push(node.isbn));
+  console.assert(JSON.stringify(списокISBN) === JSON.stringify([50, 75, 100, 150]), "❌ Ошибка обхода дерева");
+  console.log("✅ Обход дерева успешно завершён\n");
 
-  // Test 4: remove node with one child
-  tree.insert(12, "Book D", "Author D", 2005);
-  tree.remove(15); // 15 has one child 12
-  console.assert(tree.search(15) === null, "❌ Test remove node with one child failed");
-  console.assert(tree.search(12) !== null, "❌ Test child of removed node missing");
+  console.log("3️⃣ Тест поиска...");
+  console.assert(дерево.search(75)?.title === "Отцы и дети", "❌ Поиск книги с ISBN 75 не работает");
+  console.assert(дерево.search(999) === null, "❌ Поиск несуществующей книги должен возвращать null");
+  console.log("✅ Поиск работает корректно\n");
 
-  // Test 5: remove root node
-  tree.remove(10);
-  console.assert(tree.search(10) === null, "❌ Test remove root node failed");
+  console.log("4️⃣ Тест удаления листа...");
+  дерево.remove(75);
+  console.assert(дерево.search(75) === null, "❌ Книга с ISBN 75 не была удалена");
+  console.log("✅ Лист успешно удалён\n");
 
-  console.log("✅ Все тесты пройдены!");
+  console.log("5️⃣ Тест удаления узла с одним ребёнком...");
+  дерево.insert(125, "Идиот", "Ф. Достоевский", 1869);
+  дерево.remove(150); // узел 150 имеет одного ребёнка 125
+  console.assert(дерево.search(150) === null, "❌ Узел с одним ребёнком не был удалён");
+  console.assert(дерево.search(125) !== null, "❌ Ребёнок удалённого узла пропал");
+  console.log("✅ Узел с одним ребёнком удалён корректно\n");
+
+  console.log("6️⃣ Тест удаления корня...");
+  дерево.remove(100);
+  console.assert(дерево.search(100) === null, "❌ Корень не был удалён");
+  console.assert(дерево.search(50) !== null, "❌ Дочерние узлы корня пропали");
+  console.log("✅ Корень удалён успешно\n");
+
+  console.log("🎉 Все тесты пройдены! Бинарное дерево работает корректно ✅");
 }
 
-runTests();
+запускТестов();
